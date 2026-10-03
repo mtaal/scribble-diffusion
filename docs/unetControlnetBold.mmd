@@ -1,0 +1,57 @@
+flowchart TB
+    X["Noisy scribble x_t<br/>1 × H × W"]
+    C["Conditions<br/>GT mask ‖ prediction<br/>2 × H × W"]
+
+    subgraph CN["ControlNet"]
+        CIN["conv_in(x) + conv_in(cond)"] --> CD1["DownBlock2D<br/>128 · H"]
+        CD1 --> CD2["DownBlock2D<br/>128 · H/2"]
+        CD2 --> CD3["AttnDownBlock2D<br/>256 · H/4"]
+        CD3 --> CD4["DownBlock2D<br/>256 · H/8"]
+        CD4 --> CMID["MidBlock2D + attn<br/>256 · H/8"]
+    end
+
+
+    subgraph UNET["Denoising UNet"]
+        UIN["conv_in"] --> UD1["DownBlock2D<br/>128 · H"]
+        UD1 --> UD2["DownBlock2D<br/>128 · H/2"]
+        UD2 --> UD3["AttnDownBlock2D<br/>256 · H/4"]
+        UD3 --> UD4["DownBlock2D<br/>256 · H/8"]
+        UD4 --> UMID["MidBlock2D + attn<br/>256 · H/8"]
+        UD1 -- "skip" --> UU4
+        UD2 -- "skip" --> UU3
+        UD3 -- "skip" --> UU2
+        UD4 -- "skip" --> UU1
+        UU1["UpBlock2D<br/>256 · H/8"] --- UMID
+        UU2["AttnUpBlock2D<br/>256 · H/4"] --- UU1
+        UU3["UpBlock2D<br/>128 · H/2"] --- UU2
+        UU4["UpBlock2D<br/>128 · H"] --- UU3
+        UOUT["GroupNorm · SiLU · conv_out<br/><b>predicted noise ε̂</b><br/>1 × H × W"] ----- UU4
+    end
+
+    TEMB["<b>Time embedding</b> · 512-d<br/>MLP(sinusoidal(t))<br/>+ E[scribble class]<br/><i>added in every ResNet<br/>block of both networks</i>"]
+    CMID ~~~ TEMB
+
+    X ---> UIN
+    X --> CIN
+    C --> CIN
+
+    CD1 -. "zero conv" .-> UU4
+    CD2 -. "zero conv" .-> UU3
+    CD3 -. "zero conv" .-> UU2
+    CD4 -. "zero conv" .-> UU1
+    CMID -. "zero conv" .-> UMID
+
+    classDef note fill:#cbd5e1,stroke:#334155,color:#0f172a,stroke-dasharray:5 4
+    classDef input fill:#6366f1,stroke:#312e81,color:#ffffff,stroke-width:2px
+    classDef ctrl fill:#fb923c,stroke:#9a3412,color:#1c0a00
+    classDef cattn fill:#c2410c,stroke:#431407,color:#ffffff,stroke-width:2px
+    classDef unet fill:#34d399,stroke:#065f46,color:#022c22
+    classDef attn fill:#047857,stroke:#022c22,color:#ffffff,stroke-width:2px
+    class X,C,UOUT input
+    class TEMB note
+    class CIN,CD1,CD2,CD4 ctrl
+    class CD3,CMID cattn
+    class UIN,UD1,UD2,UD4,UU1,UU3,UU4 unet
+    class UD3,UMID,UU2 attn
+    style CN fill:#fed7aa,stroke:#9a3412,stroke-width:2px
+    style UNET fill:#a7f3d0,stroke:#065f46,stroke-width:2px

@@ -1,0 +1,19 @@
+{
+	"dataParams": {
+		"pathsToRealData": [
+			"/workspace/data"
+		]
+	},
+	"modelParams": {
+	        "blockOutChannels": [64, 64, 128, 128],
+		"layersPerBlock": 1,
+	        "normNumGroups": 16
+        },
+	"trainParams": {
+		"numWorkers": 12,
+                "learningRate": 0.00001,
+		"wandbName": "small-1e-5-1layer-half-channels-64-64-128-128_g16_controlnet_300e",
+		"wandbNotes": "Half-channel 1layer 1e-5 lr 12 workers experiment: blockOutChannels (64,64,128,128), normNumGroups=16, Same data /schedule as default to test whether a ~4x smaller model+controlnet matches quality.",
+		"savePath": "./test-results"
+	}
+}

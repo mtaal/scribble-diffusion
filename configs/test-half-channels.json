@@ -1,0 +1,15 @@
+{
+	"dataParams": {
+		"pathsToRealData": [
+			"/data"
+		]
+	},
+	"modelParams": {
+		"blockOutChannels": [64, 64, 128, 128],
+		"normNumGroups": 16
+	},
+	"trainParams": {
+		"wandbName": "small-half-channels-64-64-128-128_g16_controlnet_300e",
+		"wandbNotes": "Half-channel experiment: blockOutChannels (64,64,128,128), normNumGroups=16, 2 layers/block. Same data/schedule as default to test whether a ~4x smaller model+controlnet matches quality."
+	}
+}

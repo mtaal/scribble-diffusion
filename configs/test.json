@@ -1,0 +1,23 @@
+{
+	"dataParams": {
+		"pathsToRealData": [
+			"/workspace/data"
+		]
+	},
+	"modelParams": {},
+	"trainParams": {
+		"batchSize": 16,
+		"numWorkers": 12,
+		"mixedPrecision": "bf16",
+		"learningRate": 1e-5,
+		"logEvery": 50,
+		"numEpochs": 300,
+		"logWandb": true,
+		"wandbName": "trlw-2-ntrlw-1-full model - standard+medscribble+real+50%-synthetic_300e",
+		"savePath": "./test-results",
+		"lossClassWeights": {
+		        "targetRegionLossWeight": 2.0,
+		        "nonTargetRegionLossWeight": 1.0
+	        }
+	}
+}

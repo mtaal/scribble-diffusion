@@ -1,0 +1,65 @@
+{
+	"dataParams": {
+		"imageSize": {
+			"width": 128,
+			"height": 128
+		},
+		"pathsToRealData": [
+			"/data"
+		],
+		"realProbability": 0.5,
+		"syntheticPerlinGeneratedProbability": 0.0,
+		"shape": "any"
+	},
+	"modelParams": {
+		"conditional": true,
+		"imageChannels": 1,
+		"nChannels": 64,
+		"model": "duUnet4Blocks",
+		"blockOutChannels": [
+			128,
+			128,
+			256,
+			256
+		],
+		"layersPerBlock": 2,
+		"normNumGroups": 32
+	},
+	"trainParams": {
+		"scribbleGauss": true,
+		"numWorkers": 4,
+		"batchSize": 16,
+		"gradientAccumulationSteps": 1,
+		"learningRate": 0.0001,
+		"lrWarmupSteps": 0,
+		"logEvery": 50,
+		"logNImages": 2,
+		"loss": "l2",
+		"mixedPrecision": "bf16",
+		"numEpochs": 300,
+		"savePath": "/workspace/results",
+		"schedulerArgs": {
+			"beta1": 0.0001,
+			"betaT": 0.2,
+			"s": 0.008,
+			"maxBeta": 0.999
+		},
+		"schedulerType": "cosine",
+		"steps": 50,
+		"logWandb": true,
+		"seed": 42,
+		"wandbProject": "diffusion-scribble-segmentation",
+		"wandbName": "wandb_run_1",
+		"wandbNotes": "Run notes",
+		"clipNorm": -1,
+		"optimizer": "AdamW",
+		"evalScribbleClassOverride": null,
+		"evalSaveEveryNImages": 1000,
+		"evalSaveMode": "stochastic",
+		"valShuffle": true,
+		"lossClassWeights": {
+			"targetRegionLossWeight": 1.0,
+			"nonTargetRegionLossWeight": 1.0
+		}
+	}
+}

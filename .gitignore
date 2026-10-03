@@ -1,0 +1,18 @@
+# Python-related
+__pycache__
+
+_tmp/
+
+# model and onnx files
+model-definition/
+
+# Others
+.venv*
+.vscode/
+.claude
+wandb
+
+# npm (docs diagram rendering)
+node_modules/
+package.json
+package-lock.json

@@ -1,0 +1,23 @@
+{
+	"dataParams": {
+		"pathsToRealData": [
+			"/workspace/data"
+		]
+	},
+	"modelParams": {
+	        "blockOutChannels": [32, 32, 64, 64],
+	         "normNumGroups": 16
+        },
+	"trainParams": {
+		"batchSize": 16,
+		"numWorkers": 12,
+		"mixedPrecision": "bf16",
+		"learningRate": 1e-5,
+		"logEvery": 50,
+		"numEpochs": 300,
+		"logWandb": true,
+		"wandbName": "small-quarter-channels-64-64-128-128_g16_controlnet_300e",
+		"wandbNotes": "Quarter-channel experiment: blockOutChannels (32,32,64,64), normNumGroups=16, 2 layers/block. Same data/schedule as default to test whether a ~8x smaller model+controlnet matches quality.",
+		"savePath": "./test-results"
+	}
+}
